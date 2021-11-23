@@ -1,0 +1,43 @@
+{% extends 'preamble.html' %} {% load static %} {% block main %}
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+                <div class="card border-0 shadow rounded-3 my-5">
+                    <div class="card-body p-4 p-sm-5">
+                        {% if alert %}
+                        <div class="alert alert-{{alert}}" role="alert">
+                            {{ message }}
+                        </div>
+                        {% endif %}
+                        <form method="POST" action="/usuarios/login" class="user">
+                            <div class="form-floating mb-3">
+                                <input type="email" class="form-control" name="correo" placeholder="name@example.com" id="username" required>
+                                <label for="floatingInput">Correo electrónico</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input type="password" class="form-control" name="clave" placeholder="Password" id="password" required>
+                                <label for="floatingPassword">Contraseña</label>
+                            </div>
+
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="checkbox" value="" id="rememberPasswordCheck">
+                                <label class="form-check-label" for="rememberPasswordCheck">
+                  Recordar contraseña
+                </label>
+                            </div>
+                            <div class="d-grid">
+                                <button class="btn btn-primary btn-login text-uppercase fw-bold" type="submit">Iniciar sesión</button> {% csrf_token %}
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script type="text/javascript" src="{% static 'js/consultas.js' %}"></script>
+
+{% endblock %}

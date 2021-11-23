@@ -1,0 +1,61 @@
+{% extends 'preamble.html' %} 
+{% load static %}
+{% block main %}
+
+<style>
+.errorlist
+    {
+        color: red;
+    }
+</style>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+        <div class="card border-0 shadow rounded-3 my-5">
+          <div class="card-body p-4 p-sm-5">
+            {% comment %} {% if alert %}
+              <div class="alert alert-{{alert}}" role="alert">
+                {{ message }}
+              </div>
+            {% endif %}
+            {% if alert == "success" %}
+              <meta http-equiv="refresh" content="2;url=/usuarios/login" />
+            {% endif %} {% endcomment %}
+            <form method="POST" class="user">
+            	<div class="form-floating mb-3">
+                {{form.nombre}}
+                {{form.nombre.errors}}
+                <label for="floatingInput">Nombre</label>
+              </div>
+              <div class="form-floating mb-3">
+                {{form.correo}}
+                {{form.correo.errors}}
+                <label for="floatingInput">Correo electrónico</label>
+              </div>
+              <div class="form-floating mb-3">
+                {{form.password1}}
+                {{form.password1.errors}}
+                <label for="floatingPassword">Contraseña</label>
+              </div>
+              <div class="form-floating mb-3">
+              {{ form.password2 }}
+               {{form.password2.errors}}
+                <label for="floatingPassword">Confirmar Contraseña</label>
+              </div>
+              <div class="d-grid">
+                <button class="btn btn-primary btn-login text-uppercase fw-bold" type="submit">Registrarme</button>
+                {% csrf_token %}
+              </div>
+            </form>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+{% comment %} <script src="{% static 'js/validate_pass.js' %}"></script> {% endcomment %}
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends 'preamble.html' %} {% load static %} {% block main %}
+<script type="text/javascript" src="{% static 'js/consultas.js' %}"></script>
+
+<div class="container bg-light" style="margin-top: 20px;margin-bottom: 20px">
+    <div class="row">
+        <script language="javascript">
+            var producto = "{{producto}}";
+            var categoria = "{{categoria}}";
+            getProductInfo(producto, categoria);
+        </script>
+        <div class="col-5">
+            <img width="500" class="flex" id="image">
+        </div>
+        <div class="col-5">
+            <div class="row">
+                <div class="col-12">
+                    <p style="font-size: 40px;font-family: Georgia" id="nombre"></p>
+                </div>
+            </div>
+            <div class="row">
+                <p style="font-size: 20px;font-family: Georgia" id="precio"></p>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <p style="font-size: 18px;font-family: Georgia" id="descripcion"></p>
+                </div>
+            </div>
+            <div class="row">
+                Características:
+                <div class="col-12">
+                    <ul>
+                        <li>1</li>
+                        <li>2</li>
+                        <li>3</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+{% endblock main %}
