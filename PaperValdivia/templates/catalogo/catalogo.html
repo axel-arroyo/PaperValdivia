@@ -7,27 +7,35 @@
         <div class="container">
 
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-4" id="productos">
-                <script language="javascript">
-                    getProducts()
-                </script>
-                {% for item in items %}
-                <a href="/catalogo/{{item.categoria.slug}}/{{ item.slug }}" style="text-decoration:none;color:rgb(0, 0, 0)">
-                    <div class="col">
-                        <div class="card shadow-sm">
-                            <img src="{{ item.imagen.url }}" width="100%" height="225">
-
-                            <div class="card-body">
-                                <p style="font-family: Berlin-Sans-Fb-Regular; font-size:20px; margin-bottom: 0px;">{{ item.nombre }}</p>
-                                <p style="font-family: Berlin-Sans-Fb-Regular; font-size:20px; color:rgb(94, 128, 119); margin-bottom: -5px;">${{ item.precio }}</p>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-                {% endfor %}
+            </div>
+            <div class="center">
+                <ul class="pagination center">
+                    <li class="active"><a href="#">1</a></li>
+                    <li><a href="#">2</a></li>
+                    <li><a href="#">3</a></li>
+                    <li><a href="#">4</a></li>
+                    <li><a href="#">5</a></li>
+                </ul>
             </div>
         </div>
     </div>
 </main>
 
+<script language="javascript">
+    var pageNumber = 1;
+    getProducts(pageNumber, "{{categoria}}");
+
+    $('#demo').pagination({
+        dataSource: [1, 2, 3, 4, 5, 6, 7],
+        pageSize: 5,
+        autoHidePrevious: true,
+        autoHideNext: true,
+        callback: function(data, pagination) {
+            // template method of yourself
+            var html = template(data);
+            dataContainer.html(html);
+        }
+    })
+</script>
 
 {% endblock %}

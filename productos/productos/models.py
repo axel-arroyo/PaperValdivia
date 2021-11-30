@@ -31,7 +31,6 @@ class Item(models.Model):
     categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE, verbose_name="Categoría")
     subcategoria = models.ForeignKey(Subcategoria, on_delete=models.CASCADE, verbose_name="Subcategoría", null=True, blank=True)
     descripcion = models.CharField(default='',max_length=512, verbose_name="Descripcion")
-    imagen = models.ImageField(upload_to='productos')
     vendidos = models.IntegerField(default=0, verbose_name="Vendidos")
 
     creado_el = models.DateTimeField(auto_now_add=True, verbose_name="Creado el")
@@ -41,4 +40,18 @@ class Item(models.Model):
         return self.slug
 
 pre_save.connect(set_slug, sender=Item)
+
+class Caracteristica(models.Model):
+    caracterisica = models.CharField(max_length=128, verbose_name="Caracteristica")
+    item = models.ForeignKey(Item, on_delete=models.CASCADE, verbose_name="Item")
+    def __str__(self) -> str:
+        return self.caracterisica
+
+class Imagen(models.Model):
+    imagen = models.ImageField(upload_to='productos', verbose_name="Imagen")
+    item = models.ForeignKey(Item, on_delete=models.CASCADE, verbose_name="Item", related_name="imagenes")
+    def __str__(self) -> str:
+        return self.imagen.url
+
+
 # Create your models here.
