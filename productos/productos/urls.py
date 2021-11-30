@@ -24,4 +24,7 @@ urlpatterns = [
     path('productos', ItemView.as_view()),
     path('categorias', CategoryView.as_view()),
     path('subcategorias', SubcategoryView.as_view()),
+    path('listProducts', ItemListView.as_view()),
+    path('newProduct', ItemCreateView.as_view()),
+    path('categorias/destroy/<slug:slug>', CategoryDeleteView.as_view()),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

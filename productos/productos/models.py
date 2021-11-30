@@ -43,7 +43,7 @@ pre_save.connect(set_slug, sender=Item)
 
 class Caracteristica(models.Model):
     caracterisica = models.CharField(max_length=128, verbose_name="Caracteristica")
-    item = models.ForeignKey(Item, on_delete=models.CASCADE, verbose_name="Item")
+    item = models.ForeignKey(Item, on_delete=models.CASCADE, verbose_name="Item", related_name="caracteristicas")
     def __str__(self) -> str:
         return self.caracterisica
 

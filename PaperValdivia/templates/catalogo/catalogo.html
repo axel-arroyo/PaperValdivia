@@ -1,7 +1,6 @@
 {% extends 'preamble.html' %} {% load static %} {% block title %}
 <title>Paper Valdivia - Catálogo</title>
 {% endblock %} {% block main %}
-<script type="text/javascript" src="{% static 'js/consultas.js' %}"></script>
 <main>
     <div class="album py-5 bg-light">
         <div class="container">
@@ -22,20 +21,16 @@
 </main>
 
 <script language="javascript">
-    var pageNumber = 1;
-    getProducts(pageNumber, "{{categoria}}");
-
-    $('#demo').pagination({
-        dataSource: [1, 2, 3, 4, 5, 6, 7],
-        pageSize: 5,
-        autoHidePrevious: true,
-        autoHideNext: true,
-        callback: function(data, pagination) {
-            // template method of yourself
-            var html = template(data);
-            dataContainer.html(html);
-        }
-    })
+    const urlSearchParams = new URLSearchParams(window.location.search);
+    const params = Object.fromEntries(urlSearchParams.entries());
+    // if categoria is not set in context
+    const cat = "{{ categoria }}";
+    console.log(cat);
+    if (cat === undefined) {
+        getProducts(params);
+    } else {
+        getProducts(params, cat);
+    }
 </script>
 
 {% endblock %}

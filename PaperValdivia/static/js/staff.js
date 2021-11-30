@@ -1,14 +1,26 @@
-const ipCatalogo = "localhost:8001";
+const editIcon = "http://localhost:8000/static/images/edit.png";
+
+function deleteCategoria(categoria) {
+    $.ajax({
+        url: 'http://' + ipCatalogo + "/categorias/destroy/" + categoria,
+        crossDomain: true,
+        type: 'DELETE',
+        success: function(response) {
+            window.location.href = "/staff/panel";
+        }
+    });
+}
 
 function fillPanel(){
     $.ajax({
-        url: 'http://' + ipCatalogo + "/productos",
+        url: 'http://' + ipCatalogo + "/listProducts",
         crossDomain: true,
         type: 'GET',
         success: function(response) {
+            console.log(response);
             $.each(response.results, function(i, item) {
                 $("#table").append(
-                    "<tr><th scope='row'><input type='checkbox' /></th><td>"+ item.nombre + "</td><td>"+ item.categoria + "</td><td>$"+ item.precio +"</td><td>" + item.vendidos + "</td><td>" + item.stock + " </td><td><a href='#' class='tm-product-delete-link'><i class='far fa-trash-alt tm-product-delete-icon'></i></a></td></tr>"
+                    "<tr onclick='trclick(event)' id="+i+"><td><input type='checkbox' /></td><td>"+i+"</td><td>"+ item.nombre + "</td><td>"+ item.categoria + "</td><td>"+ item.subcategoria + "</td><td>"+ item.precio +"</td><td>" + item.vendidos + "</td><td>" + item.stock + " </td><td><a href='edit/"+item.slug+"'><img src="+editIcon+" width='20px' height='auto'/></a></td></tr>"
                 );
             });
         },
@@ -18,22 +30,47 @@ function fillPanel(){
     });
 }
 
-function postProduct(form) {
-    var parametros = {
-        "nombre": form.nombre.value,
-        "precio": form.precio.value,
-        "descripcion": form.descripcion.value,
-        "categoria": form.categoria.value,
-        "subcategoria": form.subcategoria.value,
-        "imagenes": form.imagenes.value
-    }
+function getProductInfo(producto) {
     $.ajax({
-        data: parametros,
+        url: 'http://' + ipCatalogo + "/listProducts" + "?producto=" + producto,
+        crossDomain: true,
+        type: 'GET',
+        success: function(response) {
+            item = response.results[0];
+            // fill input values
+            $("#nombre").val(item.nombre);
+            $("#precio").val(item.precio);
+            $("#descripcion").val(item.descripcion);
+            $("#categoria").val(item.categoria);
+            // add actual option to categoria
+            $('#categoria').append($('<option>', {
+                value: item.categoria,
+                text: item.categoria
+            }));
+            $("#subcategoria").val(item.subcategoria);
+            // add actual option to subcategoria
+            $('#subcategoria').append($('<option>', {
+                value: item.subcategoria,
+                text: item.subcategoria
+            }));
+            $("#stock").val(item.stock);
+
+        },
+        error: function(data) {
+            console.log(data);
+        }
+    });
+}
+
+function postProduct(formData) {
+    console.log(formData);
+    $.ajax({
+        data: formData,
         url: 'http://' + ipCatalogo + "/productos",
         crossDomain: true,
         type: 'POST',
-        datatype: 'multipart/form-data',
-        enctype: 'multipart/form-data',
+        processData: false,
+        contentType: false,
         success: function(response) {
             console.log(response);
             window.location.href = "/staff/panel";

@@ -12,6 +12,7 @@
     <script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'js/consultas.js' %}"></script>
     <!-- Bootstrap icons-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
     <!-- Core theme CSS (includes Bootstrap)-->
@@ -55,10 +56,10 @@
                     <!-- Barra busqueda -->
                     <ul class="nav navbar-nav px-4">
                         <li>
-                            <form action="" class="navbar-form">
+                            <form onsubmit="return searchProduct(this)" class="navbar-form">
                                 <div class="form-group">
                                     <div class="input-group">
-                                        <input type="search" size="50" name="search" id="" placeholder="Buscar productos" class="form-control">
+                                        <input type="search" size="50" name="search" id="search" placeholder="Buscar productos" class="form-control">
                                         <span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
                                     </div>
                                 </div>
@@ -71,7 +72,7 @@
                     {% endif %}
                 </ul>
                 <form class="d-flex">
-                    <button class="btn btn-outline-dark" type="submit">
+                    <button class="btn btn-outline-dark">
                             <i class="bi-cart-fill me-1"></i>
                             Carro
                             <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
@@ -119,7 +120,7 @@
                         <h6 class="text-uppercase fw-bold mb-4">
                             <i class="fas fa-gem me-3"></i>Quienes somos
                         </h6>
-                        <p>
+                        <p style="text-align: justify;">
                             Somos una empresa de Valdivia dedicada a la venta de productos de papelería de calidad, con una amplia gama de productos para todos los gustos.
                         </p>
                     </div>

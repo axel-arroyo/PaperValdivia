@@ -5,6 +5,8 @@ from .serializers import ItemSerializer, CategorySerializer, SubcategorySerializ
 from rest_framework.pagination import PageNumberPagination, LimitOffsetPagination
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.filters import SearchFilter, OrderingFilter
+from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView, UpdateAPIView, DestroyAPIView
 
 
 class ResponsePagination(PageNumberPagination):
@@ -12,10 +14,33 @@ class ResponsePagination(PageNumberPagination):
     page_query_param = 'page'
     max_page_size = 12
 
+# Items/Productos
+
+class ItemListView(ListAPIView):
+    queryset = Item.objects.all()
+    serializer_class = ItemSerializer
+    filter_backends = [SearchFilter, OrderingFilter]
+    search_fields = ['nombre', 'descripcion', 'categoria__nombre', 'subcategoria__nombre', 'slug']
+    pagination_class = ResponsePagination
+
+    def get(self, request, *args, **kwargs):
+        if request.GET.get('producto'):
+            self.queryset = self.queryset.filter(slug=request.GET.get('producto'))
+        elif request.GET.get('categoria'):
+            self.queryset = Item.objects.filter(categoria__slug=request.GET.get('categoria'))
+        elif request.GET.get('subcategoria'):
+            self.queryset = Item.objects.filter(subcategoria__slug=request.GET.get('subcategoria'))
+        return super().get(request, *args, **kwargs)
+
+
+class ItemCreateView(CreateAPIView):
+    queryset = Item.objects.all()
+    serializer_class = ItemSerializer
 
 class ItemView(APIView):
     serializer_class = ItemSerializer
     paginator = ResponsePagination()
+
     def get(self, request):
         if request.method == 'GET':
             if request.GET.get('categoria'):
@@ -41,24 +66,36 @@ class ItemView(APIView):
     
     def post(self, request):
         if request.method == 'POST':
-            print("start")
+            print("A")
             print(request.data)
             serializer = ItemSerializer(data=request.data)
-            print("A")
+            print("B")
             if serializer.is_valid():
-                print("A")
-                serializer.save()
                 print("C")
+                serializer.save()
                 # save images
+                print("D")
                 for image in request.FILES.getlist('imagenes'):
                     img = Imagen(item=serializer.instance, imagen=image)
                     img.save()
+                print("F")
                 # update serializer
-                print("D")
                 serializer = ItemSerializer(serializer.instance, context={'request': request})
-                print("E")
+                print("G")
                 return Response(serializer.data)
+            print("ZZZ")
             return Response(serializer.errors)
+
+
+# Categorias
+
+class CategoryDeleteView(DestroyAPIView):
+    serializer_class = CategorySerializer
+    lookup_field = 'slug'
+    
+    def get_queryset(self):
+        return Categoria.objects.filter(slug=self.kwargs['slug'])
+    
 
 
 class CategoryView(APIView):

@@ -1,8 +1,22 @@
 const ipCatalogo = "localhost:8001";
 
-function getProducts(page, categoria) {
+function searchProduct(input) {
+    // href to catalogo with search get param
+    window.location.href = "http://localhost:8000/catalogo?search=" + input.search.value;
+    return false;
+}
+
+
+function getProducts(getParams, cat) {
+    var url = "http://" + ipCatalogo + "/listProducts?page=1";
+    if (getParams.search != null) {
+        url += "&search=" + getParams.search;
+    }
+    if (cat){
+        url = "http://" + ipCatalogo + "/listProducts?categoria="+cat+"&page=1";
+    }
     $.ajax({
-        url: 'http://' + ipCatalogo + "/productos?page=" + page + "&categoria=" + categoria,
+        url: url,
         crossDomain: true,
         type: 'GET',
         success: function(response) {
@@ -81,6 +95,11 @@ function getProductInfo(producto, categoria) {
                         "<img class='img-flex' src='" + imagen + "' width='150px' height='100px'>"
                     );
                 }
+            });
+            $.each(response.caracteristicas, function(i, car) {
+                $("#caracteristicas").append(
+                    "<p style='font-family: Berlin-Sans-Fb-Regular; font-size:20px; margin-bottom: 0px;'>" + car.nombre + "</p>"
+                );
             });
         },
         error: function(data) {
